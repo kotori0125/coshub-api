@@ -1,12 +1,13 @@
 from datetime import datetime, timedelta
 from jose import JWTError, jwt
 from passlib.context import CryptContext
+import os
 
-SECRET_KEY = "coshub_secret_key_2025"
+SECRET_KEY = os.environ.get("COSHUB_SECRET_KEY", "coshub_secret_key_2025_fallback")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
 
 def verify_password(plain, hashed):
     return pwd_context.verify(plain, hashed)
